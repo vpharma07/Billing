@@ -19,5 +19,11 @@ from Inventory import views as inventory_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^Inventory/', inventory_views.Product_list),
-]
+    url(r'^Inventory/$', inventory_views.Product_list),
+    url(r'^Inventory/ajax/add_inventory/$', inventory_views.Add_products),
+    url(r'^Inventory/ajax/delete_inventory/$', inventory_views.Delete_products),
+    url(r'^Inventory/ajax/search_inventory/$', inventory_views.Search_products),
+    ]
+
+
+

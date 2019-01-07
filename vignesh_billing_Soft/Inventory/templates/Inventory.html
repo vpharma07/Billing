@@ -1,0 +1,176 @@
+<!DOCTYPE>
+<html>
+<head>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+<title>Inventory Stock Lists</title>
+</head>
+<body>
+  <div class="container">
+    <form id="searchform" type="get" action="/Inventory/ajax/search_inventory" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
+      <div class="form-group input-group col-md-12">
+            <input type="text" class="form-control" name="search" placeholder="Search" required/>
+            <span class="input-group-btn">
+                <button class="btn btn-info form-control" onClick="/Inventory/ajax/search_inventory" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
+                    <i class="glyphicon glyphicon-search"></i>
+                </button>
+            </span>
+      <!-- <input type="search" class="form-control" id="search" name="search" placeholder="Search"/>
+      <span class="glyphicon glyphicon-search"></span> -->
+  
+      </div>
+    </form>    
+    <h2>Inventory Stock List</h2>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/Inventory/">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Others</li>
+      </ol>
+    </nav>
+    <table class="table table-hover table-responsive">
+      <thead>
+        <tr>
+          <th>Name</th>         
+          <th>Description</th>
+          <th>Packaging</th>
+          <th>HSNCode</th>
+          <th>Batch</th>
+          <th>Exp_Date</th>
+          <th>quantity</th>
+          <th>GST</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input id="Name" class="form-control ipt"></td>
+          <td><input id="Dsc" class="form-control ipt"></td>
+          <td><input id="Pck" class="form-control ipt"></td>
+          <td><input id="Hsnc" class="form-control ipt"></td>
+          <td><input id="Btch" class="form-control ipt"></td>
+          <td><input id="Exp" type="date" class="form-control ipt"></td>
+          <td><input id="qty" class="form-control ipt"></td>
+          <td><input id="gst" class="form-control ipt"></td>
+          <td><div class="dropdown">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
+              <span class="caret"></span>
+            </button>
+          <ul class="dropdown-menu">
+            <li><a href="" onClick="javascript:Add_inputs()">Add</a></li>
+            <li><a href="" onClick="javascript:Delete_inputs()">Delete</a></li>
+            <li><a href="" onClick="javascript:Clear_inputs()">Clear</a></li>
+          </ul></div></td>
+        </tr>
+        {% for pdt in Pdts %}
+        <tr>
+          <td>{{ pdt.Name }}</td>
+          <td>{{ pdt.Description }}</td>
+          <td>{{ pdt.Packaging }}</td>
+          <td>{{ pdt.HSNCode }}</td>
+          <td>{{ pdt.Batch }}</td>
+          <td>{{ pdt.Exp_Date }}</td>
+          <td>{{ pdt.qty }}</td>
+          <td>{{ pdt.GST }}</td>
+        </tr>
+        {% endfor %}
+      </tbody> 
+    </table>
+  </div>
+  <script type="text/javascript">
+      var dataString = null;
+      function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+      };  
+      function make_ajax(dataString,url,method){
+        var csrftoken = $.cookie('csrftoken');
+        $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                xhr.setRequestHeader("Content-Type", 'application/json')
+                }
+              }
+            });
+        $.ajax({
+              type: method,
+              url: url,
+              data: dataString,
+              success: function (data) {
+                alert("Ajax call made successfully");
+                location.reload()
+              },
+              error: function (xhr, textStatus, errorThrown) {
+              alert(errorThrown);
+              }
+           });
+          $(document).ajaxStop(function(){
+            window.location.reload();
+          });
+      }
+      function Clear_inputs(){
+        $('.ipt').val('');
+        return 1;
+      };
+
+      function Validate_inputs(i){
+        console.log(i)
+        if (i==1){
+          $('.ipt').each(function() {
+          if(!$(this).val()){
+              alert($(this).val())
+              alert('Some fields are empty, Please Fill all the fields');
+              return false;
+          }
+          });
+          }
+          else if (i==2){
+            if(!$('#Name').val() && !$('#Btch').val()){
+              alert('Name and Batch are empty, Please Fill the fields to update');
+              return false;
+            }
+          }
+          return true;
+      };
+      function Add_inputs(){
+        if (Validate_inputs(1)){    
+            dataString = JSON.stringify({
+                'Name': $('#Name').val(),
+                'Desc': $('#Dsc').val(),
+                'Packaging': $('#Pck').val(),
+                'HSN': $('#Hsnc').val(),
+                'Batch': $('#Btch').val(),
+                'Exp': $('#Exp').val(),
+                'qty': $('#qty').val(),
+                'gst': $('#gst').val(),
+              }); 
+            make_ajax(dataString,'ajax/add_inventory/','POST');
+          }
+        };
+      function Delete_inputs(){
+        if(Validate_inputs(2)){
+          dataString = JSON.stringify({
+            'Name': $('#Name').val(),
+            'Batch': $('#Btch').val(),
+          });
+          make_ajax(dataString,'ajax/delete_inventory/','POST');
+          }
+        };
+        function Search_inputs(){
+          if (Validate_inputs(2)){
+             dataString = JSON.stringify({
+            'Name': $('#Name').val(),
+            'Batch': $('#Btch').val(),
+          });
+          make_ajax(dataString,'ajax/search_inventory/','GET');
+          }
+        };
+      </script>
+</body>
+</html>
