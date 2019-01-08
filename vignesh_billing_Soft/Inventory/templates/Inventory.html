@@ -33,7 +33,7 @@
         <li class="breadcrumb-item active" aria-current="page">Others</li>
       </ol>
     </nav>
-    <table class="table table-hover table-responsive">
+    <table id="table" class="table table-hover table-responsive">
       <thead>
         <tr>
           <th>Name</th>         
@@ -171,6 +171,12 @@
           make_ajax(dataString,'ajax/search_inventory/','GET');
           }
         };
+        $("#table tr").click(function(){
+          $(this).addClass('selected').siblings().removeClass('selected');    
+          var value=$(this).find('td:first').html();
+          alert($(this).find('tr').html());
+          alert(value);    
+      });
       </script>
 </body>
 </html>
