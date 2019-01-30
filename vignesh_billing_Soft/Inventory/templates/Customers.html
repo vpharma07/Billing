@@ -9,15 +9,15 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
-<title>Inventory Stock Lists</title>
+<title>Customers Lists</title>
 </head>
 <body>
   <div class="container">
-    <form id="searchform" type="get" action="/Inventory/ajax/search_inventory" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
+    <form id="searchform" type="get" action="/Customers/ajax/search_customer/" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
       <div class="form-group input-group col-md-12">
             <input type="text" class="form-control" name="search" placeholder="Search" required/>
             <span class="input-group-btn">
-                <button class="btn btn-info form-control" onClick="/Inventory/ajax/search_inventory" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
+                <button class="btn btn-info form-control" onClick="/Customers/ajax/search_customer/" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
                     <i class="glyphicon glyphicon-search"></i>
                 </button>
             </span>
@@ -26,7 +26,7 @@
   
       </div>
     </form>    
-    <h2>Inventory Stock List</h2>
+    <h2>Customers List</h2>
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Inventory/">Home</a></li>
@@ -39,51 +39,46 @@
       <thead>
         <tr>
           <th>Name</th>         
-          <th>Description</th>
-          <th>Packaging</th>
-          <th>HSNCode</th>
-          <th>Batch</th>
-          <th>Exp_Date</th>
-          <th>quantity</th>
-          <th>GST</th>
+          <th>Address</th>
+          <th>Mobile</th>
+          <th>Outstanding</th>
+          <th>Premium</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td><input id="Name" class="form-control ipt"></td>
-          <td><input id="Dsc" class="form-control ipt"></td>
-          <td><input id="Pck" class="form-control ipt"></td>
-          <td><input id="Hsnc" class="form-control ipt"></td>
-          <td><input id="Btch" class="form-control ipt"></td>
-          <td><input id="Exp" type="date" class="form-control ipt"></td>
-          <td><input id="qty" class="form-control ipt"></td>
-          <td><input id="gst" class="form-control ipt"></td>
+          <td><input id="Addr" class="form-control ipt"></td>
+          <td><input id="Mobile" class="form-control ipt"></td>
+          <!-- <td><input id="GST" class="form-control ipt"></td> -->
+          <!-- <td><input id="Lic" class="form-control ipt"></td> -->
+          <td><input id="Out" class="form-control ipt" ></td>
+          <td><input id="Prem" type="checkbox" class="ipt" style="width: 20px; text-align: center;"></td>
           <td><div class="dropdown">
             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
               <span class="caret"></span>
             </button>
           <ul class="dropdown-menu">
-            <li><a href="" onClick="javascript:Add_inputs()">Add</a></li>
-            <li><a href="" onClick="javascript:Delete_inputs()">Delete</a></li>
-            <li><a href="" onClick="javascript:Clear_inputs()">Clear</a></li>
+            <li><a href="" onClick="javascript:Add_customers()">Add</a></li>
+            <li><a href="" onClick="javascript:Delete_customers()">Delete</a></li>
+            <li><a href="" onClick="javascript:Clear_customers()">Clear</a></li>
           </ul></div></td>
           <td>
-            <button class="btn btn-primary" type="button" onClick="location.href='ajax/filter_inventory/';">
-              Short Expiry
+            <button class="btn btn-primary" type="button" onClick="location.href='/Customers/ajax/filter_customer/';">
+              Premium
             </button>
           </td>
         </tr>
-        {% for pdt in Pdts %}
+        {% for cst in Cst %}
         <tr class="val_row">
-          <td>{{ pdt.Name }}</td>
-          <td>{{ pdt.Description }}</td>
-          <td>{{ pdt.Packaging }}</td>
-          <td>{{ pdt.HSNCode }}</td>
-          <td>{{ pdt.Batch }}</td>
-          <td>{{ pdt.Exp_Date }}</td>
-          <td>{{ pdt.qty }}</td>
-          <td>{{ pdt.GST }}</td>
+          <td>{{ cst.Name }}</td>
+          <td>{{ cst.Addr }}</td>
+          <td>{{ cst.Mobile }}</td>
+          <!-- <td>{{ cst.GST }}</td>
+          <td>{{ cst.Lic }}</td> -->
+          <td>{{ cst.Outstanding }}</td>
+          <td>{{ cst.Premium }}</td>
         </tr>
         {% endfor %}
       </tbody> 
@@ -110,16 +105,12 @@
               url: url,
               data: dataString,
               success: function (data) {
-                alert("Ajax call made successfully");
-                location.reload()
+                window.location.reload();
               },
               error: function (xhr, textStatus, errorThrown) {
               alert(errorThrown);
               }
            });
-          $(document).ajaxStop(function(){
-            window.location.reload();
-          });
       }
       function Clear_inputs(){
         $('.ipt').val('');
@@ -145,36 +136,42 @@
           }
           return true;
       };
-      function Add_inputs(){
-        if (Validate_inputs(1)){    
+      function Add_customers(){
+        if (Validate_inputs(1)){        
+            if ($('#Prem').is(":checked")){
+              var Prem=1;
+            }
+            else{
+              var Prem=0;
+            }
             dataString = JSON.stringify({
                 'Name': $('#Name').val(),
-                'Desc': $('#Dsc').val(),
-                'Packaging': $('#Pck').val(),
-                'HSN': $('#Hsnc').val(),
-                'Batch': $('#Btch').val(),
-                'Exp': $('#Exp').val(),
-                'qty': $('#qty').val(),
-                'gst': $('#gst').val(),
+                'Addr': $('#Addr').val(),
+                'Mobile': $('#Mobile').val(),
+                // 'GST': $('#GST').val(),
+                // 'Lic': $('#Lic').val(),
+                'Outstanding': $('#Out').val(),
+                'Prem': Prem, 
               }); 
-            make_ajax(dataString,'ajax/add_inventory/','POST');
+            alert(dataString);
+            make_ajax(dataString,'ajax/add_customer/','POST');
           }
         };
-      function Delete_inputs(){
+      function Delete_customers(){
         if(Validate_inputs(2)){
           dataString = JSON.stringify({
             'Name': $('#Name').val(),
-            'Batch': $('#Btch').val(),
+            'Mobile': $('#Mobile').val(),
           });
-          make_ajax(dataString,'ajax/delete_inventory/','POST');
+          make_ajax(dataString,'ajax/delete_customer/','POST');
           }
         };
-        function Search_inputs(){
+        function Search_customers(){
           if (Validate_inputs(2)){
              dataString = JSON.stringify({
             'Name': $('#Name').val(),
           });
-          make_ajax(dataString,'ajax/search_inventory/','GET');
+          make_ajax(dataString,'ajax/search_customer/','GET');
           }
         };
         $(".val_row").click(function(){

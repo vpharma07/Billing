@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Billing Invoice template</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <style>
+    .invoice-box {
+        max-width: 800px;
+        margin: auto;
+        padding: 30px;
+        border: 1px solid #eee;
+        box-shadow: 0 0 10px rgba(0, 0, 0, .15);
+        font-size: 16px;
+        line-height: 24px;
+        font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+        color: #555;
+    }
+    
+    .invoice-box table {
+        width: 100%;
+        line-height: inherit;
+        text-align: left;
+    }
+    
+    .invoice-box table td {
+        padding: 5px;
+        vertical-align: top;
+    }
+    
+    .invoice-box table tr td:nth-child(2) {
+        text-align: right;
+    }
+    
+    .invoice-box table tr.top table td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.top table td.title {
+        font-size: 45px;
+        line-height: 45px;
+        color: #333;
+    }
+    
+    .invoice-box table tr.information table td {
+        padding-bottom: 40px;
+    }
+    
+    .invoice-box table tr.heading td, .heading{
+        background: #eee;
+        border-bottom: 1px solid #ddd;
+        font-weight: bold;
+    }
+    
+    .invoice-box table tr.details td {
+        padding-bottom: 20px;
+    }
+    
+    .invoice-box table tr.item td{
+        border-bottom: 1px solid #eee;
+    }
+    
+    .invoice-box table tr.item.last td {
+        border-bottom: none;
+    }
+    
+    .invoice-box table tr.total td:nth-child(2) {
+        border-top: 2px solid #eee;
+        font-weight: bold;
+    }
+    
+    @media only screen and (max-width: 600px) {
+        .invoice-box table tr.top table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+        
+        .invoice-box table tr.information table td {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+    
+    /** RTL **/
+    .rtl {
+        direction: rtl;
+        font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
+    }
+    
+    .rtl table {
+        text-align: right;
+    }
+    .thd {
+        text-align: center;
+    }
+    .tabletd{
+        text-align: right;
+    }
+    
+    .rtl table tr td:nth-child(2) {
+        text-align: left;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="invoice-box">
+        <table cellpadding="0" cellspacing="0">
+            <tr class="top">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td class="title">
+                                <img src="VigneshClinics_Logo.PNG" style="width:50%; max-width:300px;">
+                            </td>
+                            
+                            <td>
+                                Invoice #: 123<br>
+                                Created: January 1, 2015<br>
+                                Due: February 1, 2015
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="information">
+                <td colspan="2">
+                    <table>
+                        <tr>
+                            <td>
+                                Shop No: 7,<br>
+                                2nd Floor, Navin's Magnolia<br>
+                                Navin's StarWoods 2.0
+                            </td>
+                            <td>
+                                <input name="number" id="number" placeholder="Mobile" onkeydown="get_customer()" class="form-control" style="width: auto;float: right;"></input><br>
+                                <span id="Cus_Name" style="clear: both;display: block;position: relative;"></span>
+                                <span id="Cus_Mob"></span><br>
+                                <span id="Cus_Addr"></span><br>
+                                <span id="Cus_Prem"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            
+            <tr class="heading">
+                <td>
+                    Payment Method
+                </td>
+                <td>
+                    <form>
+                        <fieldset id="group1">
+                            <input type="radio" value="Cash" name="group1">
+                            <label>Cash</label>
+                            <input type="radio" value="Card" name="group1">
+                            <label>Card</label>
+                        </fieldset>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <table>
+            <thead>
+                <tr class="heading">
+                    <th class="thd">Name</th>
+                    <th class="thd">Exp_Date</th>
+                    <th class="thd">Qty</th>
+                    <th class="thd">GST</th>
+                    <th class="thd">Price</th>
+                </tr>
+            </thead>
+            <tbody>     
+            <tr class="item">
+                <td><select name="productselect" id="productselect" class="form-control" style="width: auto"></select></td>
+                <td><input id="Exp_Date" class="form-control"></td>
+                <td><input id="Qty" class="form-control"></td>
+                <td><input id="GST" class="form-control"></td>
+                <td><input id="Price" class="form-control"></td>
+            </tr>
+            <tr class="item last tabletd">
+                    <td colspan="5">The Goods are sold under doctor's prescription</td>
+            </tr>
+            <tr class="total tabletd">
+                <td colspan="5">
+                    Sub Total: $350
+                </td>   
+            </tr>       
+            <tr class="total tabletd">
+                <td colspan="5">
+                    GST: $35
+                </td>   
+            </tr>            
+            <tr class="total tabletd">
+                <td colspan="5">
+                   Total: $385.00
+                </td>
+            </tr>
+        </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+        $(function(){
+            $("#Name").keyup(function(){
+                if (event.keyCode == 13){
+                    $('.image-search').trigger('click');
+                }
+            });
+            $('.image-search').on('click', function () {
+                alert('triggered!');
+            });
+            get_products(); 
+        });
+        function csrfSafeMethod(method) {
+            // these HTTP methods do not require CSRF protection
+            return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+        };  
+        function make_ajax(){
+        var csrftoken = $.cookie('csrftoken');
+        $.ajaxSetup({
+              beforeSend: function(xhr, settings) {
+              if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+                xhr.setRequestHeader("Content-Type", 'application/json')
+                }
+              }
+            });
+        }
+        function get_products(){
+            make_ajax();
+            $.ajax({
+              type: "GET",
+              url: "ajax/products",
+              data: '',
+              datatype: 'json',
+              success: function (data) {
+                    for (var i in data['Data']) {
+                            $('#productselect').append($('<option>', {
+                                value: data['Data'][i],
+                                text: data['Data'][i]
+                            }));
+                    }
+              },
+              error: function (xhr, textStatus, errorThrown) {
+              alert(errorThrown);
+              }
+
+           });
+        }
+        function get_customer(){
+            if(event.key === 'Enter'){
+            make_ajax();
+            $.ajax({
+              type: "POST",
+              url: "ajax/customers",
+              data: JSON.stringify({
+                            'Mobile': $('#number').val()}
+                            ),
+              datatype: 'json',
+              success: function (data) {
+                            alert(data['Data']['Name']);
+                            $('#Cus_Name').text(data['Data']['Name']);
+                            $('#Cus_Addr').text(data['Data']['Addr']);
+                            $('#Cus_Mob').text(data['Data']['Mobile']);
+                            $('#Cus_Prem').text(data['Data']['Premium']);
+              },
+              error: function (xhr, textStatus, errorThrown) {
+              alert(errorThrown);
+              }
+            });
+            }
+        }
+
+    </script>
+</body>
+</html>

@@ -23,6 +23,15 @@ urlpatterns = [
     url(r'^Inventory/ajax/add_inventory/$', inventory_views.Add_products),
     url(r'^Inventory/ajax/delete_inventory/$', inventory_views.Delete_products),
     url(r'^Inventory/ajax/search_inventory/$', inventory_views.Search_products),
+    url(r'^Inventory/ajax/filter_inventory/$', inventory_views.Filter_products),
+    url(r'^Billing/$', inventory_views.Billing_view),
+    url(r'^Billing/ajax/products$', inventory_views.Billing_products),
+    url(r'^Billing/ajax/customers$', inventory_views.Customer_products),
+    url(r'^Customers/$', inventory_views.Customers_List),
+    url(r'^Customers/ajax/add_customer/$', inventory_views.Add_customers),
+    url(r'^Customers/ajax/delete_customer/$', inventory_views.Delete_customers),
+    url(r'^Customers/ajax/search_customer/$', inventory_views.Search_customers),
+    url(r'^Customers/ajax/filter_customer/$', inventory_views.Filter_customers),
     ]
 
 
