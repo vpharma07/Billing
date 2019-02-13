@@ -28,6 +28,7 @@ def Add_products(request):
 				object.Exp_Date = data['Exp']
 				object.qty = data['qty']
 				object.GST = data['gst']
+				object.MRP = data['MRP']
 				object.save()
 			data={'data':'Data Already Exists and updated'}
 		else:
@@ -39,6 +40,7 @@ def Add_products(request):
 			product.Exp_Date = data['Exp']
 			product.qty = data['qty']
 			product.GST = data['gst']
+			product.MRP = data['MRP']
 			product.save()
 			data={'data':'Data Added Successfully'}
 		return HttpResponseRedirect("Inventory.html",{"Pdts": Products.objects.all()})
@@ -52,7 +54,6 @@ def Delete_products(request):
 		obj = Products.objects.filter(Name=data['Name'],Batch=data['Batch'])
 		for object in obj:
 			object.delete()
-			print "data"
 		data={'data':'Data Deleted Successfully'}
 	else:
 		render(request, 'Inventory.html', {"Pdts": Products.objects.all()})	
@@ -73,6 +74,25 @@ def Filter_products(request):
 def Billing_view(request):
 	return render(request, "Billing.html")
 
+def Billing_Product(request):
+	data=json.loads(request.body)
+	if request.method == 'POST':	
+		obj1 = Products.objects.filter(Name__icontains=data['Name']).order_by('Exp_Date')
+		qty=0
+
+		obj = Products.objects.filter(Name__icontains=data['Name']).order_by('Exp_Date').first()
+		data=[0]*(4+len(obj1))
+		data[0]=obj.Exp_Date
+		data[1]=obj.GST
+		data[2]=obj.MRP
+		data[3]=obj.id
+		K=1
+		for i in obj1:
+			data[3+K]=obj.qty
+			K+=1
+
+	return JsonResponse({"Data": data})
+
 def Billing_products(request):
 	obj=Products.objects.all().order_by('Name')
 	data = [0]*len(obj)
@@ -80,7 +100,6 @@ def Billing_products(request):
 	for i in obj:
 		data[k]=i.Name
 		k+=1;
-	print data
 	return JsonResponse({"Data": data})
 
 def Customer_products(request):
@@ -100,7 +119,6 @@ def Customer_products(request):
 				data.update({'Premium': "Non-Premium"})
 			else:
 				data.update({'Premium': "Premium"})
-	print data
 	return JsonResponse({"Data": data})
 
 def Customers_List(request):
@@ -145,7 +163,6 @@ def Delete_customers(request):
 		obj = Customers.objects.filter(Name=data['Name'],Mobile=data['Mobile'])
 		for object in obj:
 			object.delete()
-			print "data"
 		data={'data':'Data Deleted Successfully'}
 	else:
 		render(request, 'Customers.html', {"Cst": Customers.objects.all()})	

@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.conf.urls.static  import static 
 from django.contrib import admin
 from Inventory import views as inventory_views
+import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -26,13 +28,14 @@ urlpatterns = [
     url(r'^Inventory/ajax/filter_inventory/$', inventory_views.Filter_products),
     url(r'^Billing/$', inventory_views.Billing_view),
     url(r'^Billing/ajax/products$', inventory_views.Billing_products),
+    url(r'^Billing/ajax/product$', inventory_views.Billing_Product),
     url(r'^Billing/ajax/customers$', inventory_views.Customer_products),
     url(r'^Customers/$', inventory_views.Customers_List),
     url(r'^Customers/ajax/add_customer/$', inventory_views.Add_customers),
     url(r'^Customers/ajax/delete_customer/$', inventory_views.Delete_customers),
     url(r'^Customers/ajax/search_customer/$', inventory_views.Search_customers),
     url(r'^Customers/ajax/filter_customer/$', inventory_views.Filter_customers),
-    ]
+    ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 

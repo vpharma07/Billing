@@ -11,6 +11,7 @@ class Products(models.Model):
 	Exp_Date=models.DateField('Expiry Date')
 	qty=models.IntegerField()
 	GST=models.FloatField(null=True,blank=True,default=None)
+	MRP=models.FloatField(null=True,blank=True,default=None)
 
 class Customers(models.Model):
 	Name=models.CharField(max_length=20)
