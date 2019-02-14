@@ -9,24 +9,40 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <title>Inventory Stock Lists</title>
 </head>
-<body>
+<body style="font-family: 'Ubuntu', sans-serif;">
   <div class="container">
     <form id="searchform" type="get" action="/Inventory/ajax/search_inventory" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
       <div class="form-group input-group col-md-12">
-            <input type="text" class="form-control" name="search" placeholder="Search" required/>
+            <input type="text" class="form-control" name="search" placeholder="Search"  required/>
             <span class="input-group-btn">
                 <button class="btn btn-info form-control" onClick="/Inventory/ajax/search_inventory" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
-                    <i class="glyphicon glyphicon-search"></i>
+                    <i class="glyphicon glyphicon-search" style="color:black;"></i>
                 </button>
             </span>
       <!-- <input type="search" class="form-control" id="search" name="search" placeholder="Search"/>
       <span class="glyphicon glyphicon-search"></span> -->
-  
+
       </div>
-    </form>    
-    <h2>Inventory Stock List</h2>
+    </form>
+    <h2 style="font-family: 'Pacifico', cursive;">Inventory Stock List</h2><br />
+  </div>
+
+  <nav class="navbar navbar-inverse"  style="border-radius:0px;">
+  <div class="container"  style="border-radius:0px;">
+    <ul class="nav navbar-nav" style="border-radius:0px;font-size:18px;font-family: 'Varela Round', sans-serif;">
+      <li class="active"><a href="/Inventory/">Home</a></li>
+      <li><a href="/Billing/">Billing</a></li>
+      <li><a href="/Customers/">Customers</a></li>
+      <li><a href="#">Others</a></li>
+    </ul>
+  </div>
+</nav>
+  <!-- <div class="container-fluid">
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="/Inventory/">Home</a></li>
@@ -35,10 +51,12 @@
         <li class="breadcrumb-item" aria-current="page">Others</li>
       </ol>
     </nav>
+  </div> -->
+  <div class="container">
     <table id="table" class="table table-hover table-responsive">
       <thead>
         <tr>
-          <th>Name</th>         
+          <th>Name</th>
           <th>Description</th>
           <th>Packaging</th>
           <th>HSNCode</th>
@@ -60,7 +78,7 @@
           <td><input id="qty" class="form-control ipt"></td>
           <td><input id="gst" class="form-control ipt"></td>
           <td><div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select
+            <button class="btn btn-success dropdown-toggle" type="button" data-toggle="dropdown">Select
               <span class="caret"></span>
             </button>
           <ul class="dropdown-menu">
@@ -86,7 +104,7 @@
           <td>{{ pdt.GST }}</td>
         </tr>
         {% endfor %}
-      </tbody> 
+      </tbody>
     </table>
   </div>
   <script type="text/javascript">
@@ -94,7 +112,7 @@
       function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-      };  
+      };
       function make_ajax(dataString,url,method){
         var csrftoken = $.cookie('csrftoken');
         $.ajaxSetup({
@@ -146,7 +164,7 @@
           return true;
       };
       function Add_inputs(){
-        if (Validate_inputs(1)){    
+        if (Validate_inputs(1)){
             dataString = JSON.stringify({
                 'Name': $('#Name').val(),
                 'Desc': $('#Dsc').val(),
@@ -156,7 +174,7 @@
                 'Exp': $('#Exp').val(),
                 'qty': $('#qty').val(),
                 'gst': $('#gst').val(),
-              }); 
+              });
             make_ajax(dataString,'ajax/add_inventory/','POST');
           }
         };
@@ -178,11 +196,11 @@
           }
         };
         $(".val_row").click(function(){
-          $(this).addClass('selected').siblings().removeClass('selected');    
+          $(this).addClass('selected').siblings().removeClass('selected');
           var vals = $(this).getElementsByTagName("td");
           alert(vals[0].innerText);
           // $(this).children('td').each(function() {
-          //   alert($(this).html());    
+          //   alert($(this).html());
           // }
           // );
       });
