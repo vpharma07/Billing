@@ -13,6 +13,21 @@
 <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <title>Inventory Stock Lists</title>
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding-top:7px;
+   background-color:grey;
+   color: white;
+   text-align: center;
+}
+th,td{
+  text-align:center;
+}
+</style>
 </head>
 <body style="font-family: 'Ubuntu', sans-serif;">
   <div class="container">
@@ -32,13 +47,13 @@
     <h2 style="font-family: 'Pacifico', cursive;">Inventory Stock List</h2><br />
   </div>
 
-  <nav class="navbar navbar-inverse"  style="border-radius:0px;">
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;border-radius:0px;">
   <div class="container"  style="border-radius:0px;">
     <ul class="nav navbar-nav" style="border-radius:0px;font-size:18px;font-family: 'Varela Round', sans-serif;">
-      <li class="active"><a href="/Inventory/">Home</a></li>
-      <li><a href="/Billing/">Billing</a></li>
-      <li><a href="/Customers/">Customers</a></li>
-      <li><a href="#">Others</a></li>
+      <li class="active"><a href="/Inventory/" >Home</a></li>
+      <li><a href="/Billing/" >Billing</a></li>
+      <li><a href="/Customers/" >Customers</a></li>
+      <li><a href="#" >Others</a></li>
     </ul>
   </div>
 </nav>
@@ -86,10 +101,18 @@
             <li><a href="" onClick="javascript:Delete_inputs()">Delete</a></li>
             <li><a href="" onClick="javascript:Clear_inputs()">Clear</a></li>
           </ul></div></td>
+          <script>
+          function funcof(){
+            alert("yes");
+          }
+          </script>
           <td>
             <button class="btn btn-primary" type="button" onClick="location.href='ajax/filter_inventory/';">
               Short Expiry
             </button>
+          </td>
+          <td>
+            <button class="btn btn-primary"><a href="/Inventory/" style="text-decoration:none;color:white;">Refresh</a></button>
           </td>
         </tr>
         {% for pdt in Pdts %}
@@ -106,6 +129,11 @@
         {% endfor %}
       </tbody>
     </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>Powered by <a href="#" style="color:white;">me</a></p>
   </div>
   <script type="text/javascript">
       var dataString = null;

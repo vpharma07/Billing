@@ -9,36 +9,59 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
 <script src="https://www.w3schools.com/lib/w3.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
 <title>Customers Lists</title>
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding-top:7px;
+   background-color:grey;
+   color: white;
+   text-align: center;
+}
+th,td{
+  text-align:center;
+}
+</style>
 </head>
-<body>
+<body style="font-family: 'Ubuntu', sans-serif;">
   <div class="container">
-    <form id="searchform" type="get" action="/Customers/ajax/search_customer/" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
+    <form id="searchform" type="get" action="/Inventory/ajax/search_inventory" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
       <div class="form-group input-group col-md-12">
-            <input type="text" class="form-control" name="search" placeholder="Search" required/>
+            <input type="text" class="form-control" name="search" placeholder="Search"  required/>
             <span class="input-group-btn">
-                <button class="btn btn-info form-control" onClick="/Customers/ajax/search_customer/" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
-                    <i class="glyphicon glyphicon-search"></i>
+                <button class="btn btn-info form-control" onClick="/Inventory/ajax/search_inventory" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
+                    <i class="glyphicon glyphicon-search" style="color:black;"></i>
                 </button>
             </span>
       <!-- <input type="search" class="form-control" id="search" name="search" placeholder="Search"/>
       <span class="glyphicon glyphicon-search"></span> -->
-  
+
       </div>
-    </form>    
-    <h2>Customers List</h2>
-    <nav aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/Inventory/">Home</a></li>
-        <li class="breadcrumb-item" aria-current="page"><a href="/Billing/">Billing</a></li>
-        <li class="breadcrumb-item" aria-current="page"><a href="/Customers/">Customers</a></li>
-        <li class="breadcrumb-item" aria-current="page">Others</li>
-      </ol>
-    </nav>
+    </form>
+    <h2 style="font-family: 'Pacifico', cursive;">Customers List</h2><br />
+  </div>
+
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;border-radius:0px;">
+  <div class="container"  style="border-radius:0px;">
+    <ul class="nav navbar-nav" style="border-radius:0px;font-size:18px;font-family: 'Varela Round', sans-serif;">
+      <li class="active"><a href="/Inventory/" >Home</a></li>
+      <li><a href="/Billing/" >Billing</a></li>
+      <li><a href="/Customers/" >Customers</a></li>
+      <li><a href="#" >Others</a></li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
     <table id="table" class="table table-hover table-responsive">
       <thead>
         <tr>
-          <th>Name</th>         
+          <th>Name</th>
           <th>Address</th>
           <th>Mobile</th>
           <th>Outstanding</th>
@@ -81,15 +104,19 @@
           <td>{{ cst.Premium }}</td>
         </tr>
         {% endfor %}
-      </tbody> 
+      </tbody>
     </table>
+  </div>
+  <!-- Footer -->
+  <div class="footer">
+    <p>Powered by <a href="#" style="color:white;">me</a></p>
   </div>
   <script type="text/javascript">
       var dataString = null;
       function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-      };  
+      };
       function make_ajax(dataString,url,method){
         var csrftoken = $.cookie('csrftoken');
         $.ajaxSetup({
@@ -137,7 +164,7 @@
           return true;
       };
       function Add_customers(){
-        if (Validate_inputs(1)){        
+        if (Validate_inputs(1)){
             if ($('#Prem').is(":checked")){
               var Prem=1;
             }
@@ -151,8 +178,8 @@
                 // 'GST': $('#GST').val(),
                 // 'Lic': $('#Lic').val(),
                 'Outstanding': $('#Out').val(),
-                'Prem': Prem, 
-              }); 
+                'Prem': Prem,
+              });
             alert(dataString);
             make_ajax(dataString,'ajax/add_customer/','POST');
           }
@@ -175,11 +202,11 @@
           }
         };
         $(".val_row").click(function(){
-          $(this).addClass('selected').siblings().removeClass('selected');    
+          $(this).addClass('selected').siblings().removeClass('selected');
           var vals = $(this).getElementsByTagName("td");
           alert(vals[0].innerText);
           // $(this).children('td').each(function() {
-          //   alert($(this).html());    
+          //   alert($(this).html());
           // }
           // );
       });
