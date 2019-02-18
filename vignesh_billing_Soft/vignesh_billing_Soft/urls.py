@@ -32,7 +32,5 @@ urlpatterns = [
     url(r'^Customers/ajax/delete_customer/$', inventory_views.Delete_customers),
     url(r'^Customers/ajax/search_customer/$', inventory_views.Search_customers),
     url(r'^Customers/ajax/filter_customer/$', inventory_views.Filter_customers),
+    url(r'^$', inventory_views.index),
     ]
-
-
-

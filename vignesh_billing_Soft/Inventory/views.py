@@ -7,7 +7,9 @@ from datetime import datetime, timedelta
 from django.core import serializers
 
 # Create your views here.
-
+def index(request):
+	return render( request, 'Index.html')
+	
 def Product_list(request):
 	Pnames = Products.objects.all().order_by('Name')
 	Pdts={"Pdts": Pnames}
@@ -44,7 +46,7 @@ def Add_products(request):
 		return HttpResponseRedirect("Inventory.html",{"Pdts": Products.objects.all()})
 	else:
 		return render(request, 'Inventory.html', {"Pdts": Products.objects.all()})
-	
+
 
 def Delete_products(request):
 	data = json.loads(request.body)
@@ -55,7 +57,7 @@ def Delete_products(request):
 			print "data"
 		data={'data':'Data Deleted Successfully'}
 	else:
-		render(request, 'Inventory.html', {"Pdts": Products.objects.all()})	
+		render(request, 'Inventory.html', {"Pdts": Products.objects.all()})
 	return JsonResponse(data)
 
 def Search_products(request):
@@ -137,7 +139,7 @@ def Add_customers(request):
 		return HttpResponseRedirect("Customers.html", {"Cst": Customers.objects.all()})
 	else:
 		return render(request, 'Customers.html', {"Cst": Customers.objects.all()})
-	
+
 
 def Delete_customers(request):
 	data = json.loads(request.body)
@@ -148,7 +150,7 @@ def Delete_customers(request):
 			print "data"
 		data={'data':'Data Deleted Successfully'}
 	else:
-		render(request, 'Customers.html', {"Cst": Customers.objects.all()})	
+		render(request, 'Customers.html', {"Cst": Customers.objects.all()})
 	return JsonResponse(data)
 
 def Search_customers(request):
