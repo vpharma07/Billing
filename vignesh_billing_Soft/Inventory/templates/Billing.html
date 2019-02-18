@@ -9,6 +9,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Varela+Round" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <style>
     .invoice-box {
         max-width: 800px;
@@ -21,79 +25,79 @@
         font-family: 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
         color: #555;
     }
-    
+
     .invoice-box table {
         width: 100%;
         line-height: inherit;
         text-align: left;
     }
-    
+
     .invoice-box table td {
         padding: 5px;
         vertical-align: top;
     }
-    
+
     .invoice-box table tr td:nth-child(2) {
         text-align: right;
     }
-    
+
     .invoice-box table tr.top table td {
         padding-bottom: 20px;
     }
-    
+
     .invoice-box table tr.top table td.title {
         font-size: 45px;
         line-height: 45px;
         color: #333;
     }
-    
+
     .invoice-box table tr.information table td {
         padding-bottom: 40px;
     }
-    
+
     .invoice-box table tr.heading td, .heading{
         background: #eee;
         border-bottom: 1px solid #ddd;
         font-weight: bold;
     }
-    
+
     .invoice-box table tr.details td {
         padding-bottom: 20px;
     }
-    
+
     .invoice-box table tr.item td{
         border-bottom: 1px solid #eee;
     }
-    
+
     .invoice-box table tr.item.last td {
         border-bottom: none;
     }
-    
+
     .invoice-box table tr.total td:nth-child(2) {
         border-top: 2px solid #eee;
         font-weight: bold;
     }
-    
+
     @media only screen and (max-width: 600px) {
         .invoice-box table tr.top table td {
             width: 100%;
             display: block;
             text-align: center;
         }
-        
+
         .invoice-box table tr.information table td {
             width: 100%;
             display: block;
             text-align: center;
         }
     }
-    
+
     /** RTL **/
     .rtl {
         direction: rtl;
         font-family: Tahoma, 'Helvetica Neue', 'Helvetica', Helvetica, Arial, sans-serif;
     }
-    
+
     .rtl table {
         text-align: right;
     }
@@ -103,15 +107,58 @@
     .tabletd{
         text-align: right;
     }
-    
+
     .rtl table tr td:nth-child(2) {
         text-align: left;
     }
     </style>
-</head>
 
-<body>
-    <div class="invoice-box">
+
+<style>
+.footer {
+   position: fixed;
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   padding-top:7px;
+   background-color:grey;
+   color: white;
+   text-align: center;
+}
+th,td{
+  text-align:center;
+}
+</style>
+</head>
+<body style="font-family: 'Ubuntu', sans-serif;">
+  <div class="container">
+    <form id="searchform" type="get" action="/Inventory/ajax/search_inventory" accept-charset="utf-8" class="form-inline pull-right"  style="margin-top: 20px;margin-bottom: 10px;">
+      <div class="form-group input-group col-md-12">
+            <input type="text" class="form-control" name="search" placeholder="Search"  required/>
+            <span class="input-group-btn">
+                <button class="btn btn-info form-control" onClick="/Inventory/ajax/search_inventory" style="border-bottom-right-radius: 5px;border-top-right-radius:5px;">
+                    <i class="glyphicon glyphicon-search" style="color:black;"></i>
+                </button>
+            </span>
+      <!-- <input type="search" class="form-control" id="search" name="search" placeholder="Search"/>
+      <span class="glyphicon glyphicon-search"></span> -->
+
+      </div>
+    </form>
+    <h2 style="font-family: 'Pacifico', cursive;">Billing</h2><br />
+  </div>
+
+  <nav class="navbar navbar-light" style="background-color: #e3f2fd;border-radius:0px;">
+  <div class="container"  style="border-radius:0px;">
+    <ul class="nav navbar-nav" style="border-radius:0px;font-size:18px;font-family: 'Varela Round', sans-serif;">
+      <li class="active"><a href="/Inventory/" >Home</a></li>
+      <li><a href="/Billing/" >Billing</a></li>
+      <li><a href="/Customers/" >Customers</a></li>
+      <li><a href="#" >Others</a></li>
+    </ul>
+  </div>
+</nav>
+    <div class="container invoice-box">
         <table cellpadding="0" cellspacing="0">
             <tr class="top">
                 <td colspan="2">
@@ -120,7 +167,7 @@
                             <td class="title">
                                 <img src="VigneshClinics_Logo.PNG" style="width:50%; max-width:300px;">
                             </td>
-                            
+
                             <td>
                                 Invoice #: 123<br>
                                 Created: January 1, 2015<br>
@@ -130,7 +177,7 @@
                     </table>
                 </td>
             </tr>
-            
+
             <tr class="information">
                 <td colspan="2">
                     <table>
@@ -151,7 +198,7 @@
                     </table>
                 </td>
             </tr>
-            
+
             <tr class="heading">
                 <td>
                     Payment Method
@@ -178,7 +225,7 @@
                     <th class="thd">Price</th>
                 </tr>
             </thead>
-            <tbody>     
+            <tbody>
             <tr class="item">
                 <td><select name="productselect" id="productselect" class="form-control" style="width: auto"></select></td>
                 <td><input id="Exp_Date" class="form-control"></td>
@@ -192,13 +239,13 @@
             <tr class="total tabletd">
                 <td colspan="5">
                     Sub Total: $350
-                </td>   
-            </tr>       
+                </td>
+            </tr>
             <tr class="total tabletd">
                 <td colspan="5">
                     GST: $35
-                </td>   
-            </tr>            
+                </td>
+            </tr>
             <tr class="total tabletd">
                 <td colspan="5">
                    Total: $385.00
@@ -206,6 +253,10 @@
             </tr>
         </tbody>
         </table>
+    </div>
+    <!-- Footer -->
+    <div class="footer">
+      <p>Powered by <a href="#" style="color:white;">me</a></p>
     </div>
     <script type="text/javascript">
         $(function(){
@@ -217,12 +268,12 @@
             $('.image-search').on('click', function () {
                 alert('triggered!');
             });
-            get_products(); 
+            get_products();
         });
         function csrfSafeMethod(method) {
             // these HTTP methods do not require CSRF protection
             return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-        };  
+        };
         function make_ajax(){
         var csrftoken = $.cookie('csrftoken');
         $.ajaxSetup({
